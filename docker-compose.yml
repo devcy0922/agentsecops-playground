@@ -17,8 +17,8 @@ services:
     ports:
       - "8095:8095"
     environment:
-      - AEGIS_MEMORY_STORE=memory
-      - AEGIS_MEMORY_EMBEDDING_PROVIDER=hash
+      - SLICERAG_STORE=memory
+      - SLICERAG_EMBEDDING_PROVIDER=hash
     networks:
       - aegis-net
 
@@ -35,6 +35,8 @@ services:
       - AEGIS_CONFIG=configs/gateway.toml
       - AEGIS_API_KEYS=aegis-demo-admin:demo-project:admin:120
       - AEGIS_HERMES_MOCK=true
+      - MEMORY_ENABLED=true
+      - MEMORY_BASE_URL=http://slicerag:8095
     depends_on:
       - mock-llm
       - slicerag
