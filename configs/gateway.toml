@@ -1,0 +1,16 @@
+[server]
+bind = "0.0.0.0:8080"
+
+[upstream]
+base_url = "http://mock-llm:14000"
+api_key = "example-mock-llm-key"
+
+[security]
+max_prompt_chars = 32768
+deny_prompt_injection = true
+deny_secret_patterns = true
+redact_pii = true
+audit_log_path = "logs/audit.jsonl"
+
+[jwt]
+secret = "aegis-demo-jwt-secret-key-123"
