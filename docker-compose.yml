@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  mock-llm:
+    build:
+      context: ../mock-llm
+    container_name: mock-llm
+    ports:
+      - "14000:14000"
+    networks:
+      - aegis-net
+
+  slicerag:
+    build:
+      context: ../slicerag
+    container_name: slicerag
+    ports:
+      - "8095:8095"
+    environment:
+      - AEGIS_MEMORY_STORE=memory
+      - AEGIS_MEMORY_EMBEDDING_PROVIDER=hash
+    networks:
+      - aegis-net
+
+  aegis-llm:
+    build:
+      context: ../aegis-llm
+    container_name: aegis-llm
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./configs/gateway.toml:/app/configs/gateway.toml
+    environment:
+      - RUST_LOG=aegis_llm=info,tower_http=info
+      - AEGIS_CONFIG=configs/gateway.toml
+      - AEGIS_API_KEYS=aegis-demo-admin:demo-project:admin:120
+      - AEGIS_HERMES_MOCK=true
+    depends_on:
+      - mock-llm
+      - slicerag
+    networks:
+      - aegis-net
+
+networks:
+  aegis-net:
+    name: aegis-net
+    driver: bridge
