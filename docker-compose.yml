@@ -1,21 +1,17 @@
-version: '3.8'
-
 services:
   mock-llm:
     build:
-      context: ../mock-llm
-    container_name: mock-llm
+      context: ./mock-llm
     ports:
-      - "14000:14000"
+      - "127.0.0.1:${MOCK_LLM_HOST_PORT:-28000}:14000"
     networks:
       - aegis-net
 
   slicerag:
     build:
       context: ../slicerag
-    container_name: slicerag
     ports:
-      - "8095:8095"
+      - "127.0.0.1:${SLICERAG_HOST_PORT:-28095}:8095"
     environment:
       - SLICERAG_STORE=memory
       - SLICERAG_EMBEDDING_PROVIDER=hash
@@ -25,18 +21,14 @@ services:
   aegis-llm:
     build:
       context: ../aegis-llm
-    container_name: aegis-llm
     ports:
-      - "8080:8080"
+      - "127.0.0.1:${AEGIS_HOST_PORT:-28080}:8080"
     volumes:
       - ./configs/gateway.toml:/app/configs/gateway.toml
+      - ./artifacts/aegis-logs:/app/logs
     environment:
       - RUST_LOG=aegis_llm=info,tower_http=info
-      - AEGIS_CONFIG=configs/gateway.toml
-      - AEGIS_API_KEYS=example-aegis-token:demo-project:admin:120
-      - AEGIS_HERMES_MOCK=true
-      - MEMORY_ENABLED=true
-      - MEMORY_BASE_URL=http://slicerag:8095
+      - GOVAIL_CONFIG=/app/configs/gateway.toml
     depends_on:
       - mock-llm
       - slicerag

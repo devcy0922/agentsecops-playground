@@ -12,5 +12,14 @@ deny_secret_patterns = true
 redact_pii = true
 audit_log_path = "logs/audit.jsonl"
 
-[jwt]
-secret = "aegis-demo-jwt-secret-key-123"
+[memory]
+enabled = true
+base_url = "http://slicerag:8095"
+max_chunks = 3
+timeout_seconds = 2
+
+[api_keys."example-aegis-token"]
+project = "aegis-demo-finance"
+role = "admin"
+allowed_models = ["gpt-4"]
+rpm = 120

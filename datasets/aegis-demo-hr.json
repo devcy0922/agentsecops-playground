@@ -1,0 +1,14 @@
+{
+  "project_id": "aegis-demo-hr",
+  "source": {
+    "type": "markdown",
+    "uri": "repo://aegis-demo-hr/onboarding-policy.md",
+    "title": "HR 데모 온보딩 정책",
+    "version": "v0.1.0"
+  },
+  "content": "# HR 데모 온보딩 정책\n\nAegis Demo HR 프로젝트의 온보딩 문서는 HR 관리자만 관리한다. 금융 결제 취소 도구와 고객 결제 정보는 이 프로젝트의 검색 결과에 포함되지 않는다.",
+  "metadata": {
+    "repository": "aegis-demo-hr",
+    "classification": "internal-demo"
+  }
+}
