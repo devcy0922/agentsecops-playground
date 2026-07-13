@@ -7,6 +7,14 @@ services:
     networks:
       - aegis-net
 
+  mock-llm-fallback:
+    build:
+      context: ./mock-llm
+    ports:
+      - "127.0.0.1:${MOCK_LLM_FALLBACK_HOST_PORT:-28001}:14000"
+    networks:
+      - aegis-net
+
   slicerag:
     build:
       context: ../slicerag
@@ -29,9 +37,34 @@ services:
     environment:
       - RUST_LOG=aegis_llm=info,tower_http=info
       - GOVAIL_CONFIG=/app/configs/gateway.toml
+      - GOVAIL_FALLBACK_UPSTREAM_URL=http://mock-llm-fallback:14000/v1
     depends_on:
       - mock-llm
+      - mock-llm-fallback
       - slicerag
+    networks:
+      - aegis-net
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "127.0.0.1:9090:9090"
+    volumes:
+      - ./configs/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - aegis-net
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - ./configs/grafana/provisioning:/etc/grafana/provisioning
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    depends_on:
+      - prometheus
     networks:
       - aegis-net
 

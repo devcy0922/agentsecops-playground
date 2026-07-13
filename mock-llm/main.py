@@ -1,15 +1,22 @@
 from copy import deepcopy
 import time
-
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, HTTPException
 
 app = FastAPI(title="AgentSecOps Mock LLM")
 received_requests: list[dict] = []
+simulate_error: bool = False
 
 
 @app.get("/health")
 def health() -> dict[str, str]:
     return {"status": "ok", "service": "mock-llm"}
+
+
+@app.post("/admin/simulate-error")
+def set_simulate_error(enable: bool = True) -> dict:
+    global simulate_error
+    simulate_error = enable
+    return {"simulate_error": simulate_error}
 
 
 @app.get("/v1/models")
@@ -29,6 +36,9 @@ def list_models() -> dict:
 
 @app.post("/v1/chat/completions")
 async def chat_completions(request: Request) -> dict:
+    global simulate_error
+    if simulate_error:
+        raise HTTPException(status_code=503, detail="Service Unavailable")
     body = await request.json()
     received_requests.append(deepcopy(body))
     model = body.get("model", "gpt-4")
