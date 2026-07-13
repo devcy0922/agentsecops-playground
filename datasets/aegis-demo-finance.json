@@ -1,0 +1,14 @@
+{
+  "project_id": "aegis-demo-finance",
+  "source": {
+    "type": "markdown",
+    "uri": "repo://aegis-demo-finance/access-policy.md",
+    "title": "금융 데모 접근 정책",
+    "version": "v0.1.0"
+  },
+  "content": "# 금융 데모 접근 정책\n\nAegis Demo Finance 프로젝트의 결제 취소 도구는 승인된 재무 관리자만 사용할 수 있다. 고객 식별 정보와 카드 번호는 LLM Upstream으로 전달하기 전에 마스킹한다. 모델 요청은 AegisLLM 게이트웨이를 통과해야 한다.",
+  "metadata": {
+    "repository": "aegis-demo-finance",
+    "classification": "internal-demo"
+  }
+}
