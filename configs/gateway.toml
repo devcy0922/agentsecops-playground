@@ -3,7 +3,6 @@ bind = "0.0.0.0:8080"
 
 [upstream]
 base_url = "http://mock-llm:14000"
-api_key = "example-mock-llm-key"
 
 [security]
 max_prompt_chars = 32768
@@ -18,8 +17,5 @@ base_url = "http://slicerag:8095"
 max_chunks = 3
 timeout_seconds = 2
 
-[api_keys."example-aegis-token"]
-project = "aegis-demo-finance"
-role = "admin"
-allowed_models = ["gpt-4"]
-rpm = 120
+# 업스트림 키와 클라이언트 키는 공개 파일에 두지 않고
+# GOVAIL_UPSTREAM_API_KEY 및 GOVAIL_API_KEYS 환경변수로 주입합니다.

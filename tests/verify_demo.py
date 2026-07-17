@@ -13,8 +13,9 @@ ROOT = Path(__file__).resolve().parents[1]
 GATEWAY_URL = os.getenv("GATEWAY_URL", "http://localhost:28080")
 RAG_URL = os.getenv("RAG_URL", "http://localhost:28095")
 MOCK_URL = os.getenv("MOCK_URL", "http://localhost:28000")
+GATEWAY_API_KEY = os.environ["PLAYGROUND_GATEWAY_API_KEY"]
 AUTH_HEADERS = {
-    "Authorization": "Bearer example-aegis-token",
+    "Authorization": f"Bearer {GATEWAY_API_KEY}",
     "Content-Type": "application/json",
 }
 

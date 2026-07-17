@@ -38,6 +38,8 @@ services:
       - RUST_LOG=aegis_llm=info,tower_http=info
       - GOVAIL_CONFIG=/app/configs/gateway.toml
       - GOVAIL_FALLBACK_UPSTREAM_URL=http://mock-llm-fallback:14000/v1
+      - GOVAIL_UPSTREAM_API_KEY=${PLAYGROUND_UPSTREAM_API_KEY:?PLAYGROUND_UPSTREAM_API_KEY를 설정하세요}
+      - GOVAIL_API_KEYS=${PLAYGROUND_GATEWAY_API_KEY:?PLAYGROUND_GATEWAY_API_KEY를 설정하세요}:aegis-demo-finance:admin:120
     depends_on:
       - mock-llm
       - mock-llm-fallback
@@ -61,7 +63,7 @@ services:
     volumes:
       - ./configs/grafana/provisioning:/etc/grafana/provisioning
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SECURITY_ADMIN_PASSWORD=${PLAYGROUND_GRAFANA_ADMIN_PASSWORD:?PLAYGROUND_GRAFANA_ADMIN_PASSWORD를 설정하세요}
       - GF_USERS_ALLOW_SIGN_UP=false
     depends_on:
       - prometheus
